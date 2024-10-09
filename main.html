@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Fitness Coach</title>
+    <style>
+        /* Reset and fix body and layout issues */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            box-sizing: border-box; /* Ensure consistent padding and border sizing */
+            width: 100vw; /* Prevent the page from overflowing horizontally */
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        /* First section (hero) container with background image */
+        .container {
+            width: 100%;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 100px;
+            color: white;
+            position: relative;
+            z-index: 1; /* Lower z-index for the background section */
+            background-image: url('https://i.ibb.co/HgXBQyy/Untitled-design-23.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .text-content {
+            max-width: 600px;
+            text-align: center;
+            margin-left: 50px;
+            z-index: 2; /* Ensure text content stays above the background */
+        }
+
+        h1 {
+            font-size: 70px;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            margin: 10px 0;
+            color: #00ff6f;
+        }
+
+        .verified-icon {
+            width: 15px;
+            vertical-align: middle;
+        }
+
+        .cta-btn {
+    margin-top: 20px;
+    background: linear-gradient(to right, #00ff6f, #aaff00);
+    color: #000;
+    padding: 15px 40px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    text-transform: uppercase;
+    position: relative;
+    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+    transition: 0.3s;
+}
+
+.cta-btn:hover {
+    filter: drop-shadow(0 0 15px #00ff6f) drop-shadow(0 0 30px #00ff6f);
+}
+
+        /* Image content - Add shadow fade */
+.image-content {
+    position: relative;
+    z-index: 2;
+    left: 180px;
+}
+
+.image-content img {
+    width: 700px;
+    display: block;
+    position: relative;
+    z-index: 2; /* Keep the image on top of the shadow */
+}
+
+/* Shadow fade effect behind the image */
+.image-content::before {
+    content: '';
+    position: absolute;
+    top: -80px; /* Closer to the image */
+    left: 10px; /* Closer to the image */
+    width: 900px; /* Slightly wider than the image */
+    height: 1100px; /* Slightly taller for a stronger effect */
+    background: radial-gradient(circle, rgba(0, 0, 0, 10), transparent 50%); /* Stronger dark center, fade faster */
+    z-index: 1; /* Behind the image */
+    filter: blur(10px); /* Less blur for a sharper shadow */
+    opacity: 2; /* Increased opacity for a stronger effect */
+    pointer-events: none; /* Prevent interaction with the shadow */
+}
+
+
+        /* Green background shape */
+        .background-shape {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, #c1ff72, #48bb0b);
+            clip-path: polygon(100% 0%, 100% 100%, 10% 100%, 60% 0%);
+            z-index: 1;
+        }
+
+        /* Dots pattern with fade effect from black to green */
+        .background-shape::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, #000 2px, transparent 3px);
+            background-size: 20px 20px;
+            mask-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), rgba(0, 255, 111, 0));
+            opacity: 1;
+            z-index: 0;
+        }
+
+        /* Headline styles */
+        .headline {
+            font-size: 25px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .headline strong {
+            color: #00ff6f;
+        }
+
+        .headline .highlight {
+            color: #aaff00;
+        }
+
+        /* Nav Bar Styles */
+        .nav-bar {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            display: flex;
+            align-items: center;
+            gap: 70px;
+            z-index: 3; /* Ensure the nav-bar is above the background */
+        }
+
+        .nav-bar img {
+            width: 100px;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+         
+      .nav-bar a:hover {
+    color: #00ff6f; /* Bright green when hovered */
+}
+      
+      /* Social Media Icons in the Header (Vertically Centered) */
+.header-social-icons {
+    position: fixed;
+    top: 50%; /* Start at the middle of the viewport */
+    left: 20px; /* Distance from the left edge */
+    transform: translateY(80%); /* Adjust to center vertically */
+    display: flex;
+    flex-direction: column; /* Stack icons vertically */
+    gap: 20px; /* Space between the icons */
+    z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+.header-social-icons a {
+    position: relative;
+}
+
+.header-social-icons img {
+    width: 15px; /* Adjust the size of the icons */
+    transition: transform 0.3s ease;
+}
+
+.header-social-icons img:hover {
+    transform: scale(1.3); /* Enlarge the icons on hover */
+}
+
+/* Sliding bar for username on hover (Reversed colors: white background, black text) */
+.header-social-icons a::after {
+    content: attr(data-username); /* Use the data attribute for the username */
+    position: absolute;
+    left: 30px; /* Distance between icon and the text */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white; /* White background for the bar */
+    color: black; /* Black text */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0; /* Hidden by default */
+    visibility: hidden;
+    white-space: nowrap; /* Prevents text from wrapping */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.header-social-icons a:hover::after {
+    opacity: 1; /* Show the bar on hover */
+    visibility: visible;
+    left: 40px; /* Slide out a bit on hover */
+}
+
+
+        /* About Section Styles */
+        .about-section {
+            width: 100%;
+            padding: 100px 50px;
+            background: linear-gradient(to right, #000000, #737373); /* Black to gray gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: auto; /* Matches the content height */
+        }
+
+        .about-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .about-left {
+            flex: 1;
+            position: relative; /* Ensure relative positioning for absolute placement */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 90%; /* Size of the main image */
+            max-width: 600px;
+            clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%); /* Parallelogram shape */
+            transition: transform 0.3s ease; /* Smooth hover transition */
+            position: relative; /* Ensure it's the base layer for the overlay */
+        }
+
+        /* Overlay the ABOUT ME image on top of the main image */
+        .about-left img.about-me-title {
+            position: absolute;
+            top: 0px; /* Adjust vertical position as needed */
+            left: -63px; /* Adjust horizontal position as needed */
+            width: 180px; /* Adjust size of ABOUT ME image */
+            z-index: 2; /* Ensure it stays above the main image */
+        }
+
+        .about-right {
+            flex: 1;
+            color: white;
+            padding-left: 50px;
+        }
+
+        .about-logo {
+            width: 60px;
+            margin-bottom: 20px;
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #e5e5e5;
+        }
+
+        .about-signature {
+            font-size: 30px;
+            color: #c1ff72;
+            margin-top: 20px;
+        }
+      
+      .services-section {
+        padding: 100px 50px;
+        background: linear-gradient(to right, #48bb0b, #c1ff72); /* Gradient background */
+        text-align: center;
+    }
+
+    .services-section h2 {
+    font-size: 80px; /* Increase font size */
+    font-weight: bold; /* Make the text bold */
+    color: #ffffff; /* White text color */
+    text-transform: uppercase; /* Uppercase for a bold look */
+    letter-spacing: 5px; /* Add some spacing between the letters */
+    background: linear-gradient(to right, #48bb0b, #c1ff72); /* Gradient color for the text */
+    -webkit-background-clip: text; /* Show gradient only on the text */
+    -webkit-text-fill-color: transparent; /* Fill the text with gradient */
+    text-align: center;
+    margin-bottom: 50px; /* Keep bottom margin as is */
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); /* Add a shadow for depth */
+    transition: all 2s ease; /* Smooth transition for hover */
+    margin-top: 10px;
+}
+
+.services-section h2:hover {
+    -webkit-text-fill-color: #333; /* Bright green on hover */
+    text-shadow: none; /* No shadow to keep it sharp */
+    transform: scale(1.05); /* Slightly enlarge the text on hover */
+}
+
+
+    .services-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .service {
+        width: 300px;
+        text-align: center;
+    }
+
+    .service img {
+        width: 50px;
+        margin-bottom: 10px;
+    }
+
+    .service h3 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .service p {
+        font-size: 14px;
+        color: black;
+        line-height: 1.6;
+    }
+
+    /* Single Button for Services Section */
+    .services-cta {
+        margin-top: 50px;
+    }
+
+    .services-cta-btn {
+        background: linear-gradient(to right, #000000, #737373); /* Gradient for button */
+        color: #c1ff72; /* Green text */
+        padding: 15px 40px;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        text-transform: uppercase;
+        clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); /* Same shape as hero banner button */
+        transition: 0.3s;
+    }
+
+    .services-cta-btn:hover {
+        filter: drop-shadow(0 0 10px #48bb0b) drop-shadow(0 0 20px #48bb0b);
+    }
+      
+      /* Instagram Highlights Section */
+.instagram-section {
+    padding: 50px;
+    background: linear-gradient(to right, #000000, #737373);
+    color: white;
+    text-align: center;
+    position: relative;
+}
+
+/* Cool Quote Styling */
+.instagram-section .quote {
+    font-size: 34px; /* Adjusted font size for a modern look */
+    font-weight: 400; /* Normal weight for a cleaner feel */
+    font-style: italic; /* Italic to give it a softer tone */
+    color: #f1f1f1; /* Light gray color for elegance */
+    text-align: center;
+    line-height: 1.4; /* Tighter line spacing for readability */
+    margin: 40px 0; /* Balanced margin for space around the quote */
+    
+    /* Subtle shadow to give some depth */
+    text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+
+    /* Gradient border-bottom for a subtle modern effect */
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+    background-image: linear-gradient(to right, #48bb0b, #c1ff72);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+    transition: background-size 0.3s ease-in-out;
+}
+
+.instagram-section .quote:hover {
+    background-size: 100% 100%; /* Fill the bottom border on hover */
+}
+
+/* Instagram profile section */
+.instagram-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.instagram-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instagram-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.instagram-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.verified-icon {
+    width: 13px;
+    height: 13px;
+}
+
+/* Follow button that will appear on hover */
+.follow-btn {
+    background: linear-gradient(to right, #48bb0b, #c1ff72);
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+    transition: 0.3s;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%); /* Center the button horizontally */
+    z-index: 2; /* Ensure it appears above the post image */
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Hide button until hover */
+}
+
+.follow-btn:hover {
+    filter: drop-shadow(0 0 10px #48bb0b) drop-shadow(0 0 20px #48bb0b);
+}
+
+/* Instagram Posts Section */
+.instagram-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+}
+
+.instagram-post {
+    width: 350px;
+    height: 350px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    background: #111;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Aligns the follow button at the bottom */
+    position: relative;
+}
+
+.instagram-post img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.instagram-post:hover {
+    transform: translateY(-10px);
+    filter: drop-shadow(0 0 10px #48bb0b);
+}
+
+/* Show the follow button on hover */
+.instagram-post:hover .follow-btn {
+    opacity: 1; /* Make the button visible */
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Responsive Design for smaller screens */
+@media screen and (max-width: 768px) {
+    .instagram-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .instagram-post {
+        width: 90%;
+        height: auto;
+    }
+}
+      /* Reviews Section CSS */
+.reviews-section {
+    padding: 100px 50px;
+    background-image: url('https://i.ibb.co/HgXBQyy/Untitled-design-23.png');
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: white;
+}
+
+.reviews-section h2 {
+    font-size: 40px;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+}
+
+.reviews-section h2 span {
+    color: #aaff00;
+}
+
+.reviews-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.review-card {
+    background: linear-gradient(135deg, #4dbe0f 0%, #0e0e0e 100%);
+    padding: 30px;
+    width: 300px;
+    border-radius: 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    color: #fff;
+    text-align: left;
+    transition: all 0.3s ease; /* Add smooth transition */
+}
+
+.review-card:nth-child(2) {
+    transform: scale(1.1); /* Make the middle card bigger */
+}
+
+.quote-icon {
+    width: 55px;
+    margin-bottom: 15px; /* Space between the quote icon and the text */
+    display: block; /* Ensure the icon takes up its own space */
+}
+
+.review-card h3 {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.review-card p {
+    margin: 15px 0;
+    font-size: 16px;
+}
+
+.stars {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #f4c01e;
+}
+
+.client-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.client-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.client-info p {
+    font-size: 14px;
+    margin: 0;
+    color: white;
+}
+
+      /* Contact Section Styles */
+.contact-section {
+    padding: 100px 50px;
+    text-align: center;
+    background: linear-gradient(to bottom, #000000, #48bb0b); /* Black to green gradient */
+    color: white;
+}
+
+.contact-section h2 {
+    font-size: 40px; /* A good size for readability */
+    margin-bottom: 40px; /* Increased margin to push the button further down */
+    font-weight: 500; /* Bold but not too heavy */
+    text-transform: none; /* Normal text casing */
+    color: #ffffff; /* Clean white text for contrast */
+    letter-spacing: normal; /* No extra letter spacing */
+    text-align: center; /* Center the text */
+    padding-bottom: 0px; /* Padding below the text for some space */
+}
+
+
+.contact-btn {
+    margin-top: 0px;
+    background: linear-gradient(to right, #000000, #737373); /* Dark gradient background */
+    color: #c1ff72; /* Green text */
+    padding: 15px 40px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    text-transform: uppercase;
+    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); /* Same button shape */
+    transition: 0.3s;
+}
+
+.contact-btn:hover {
+    filter: drop-shadow(0 0 10px #48bb0b) drop-shadow(0 0 20px #48bb0b);
+}
+
+.social-icons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.social-icons img {
+    width: 20px;
+    transition: transform 0.3s ease;
+}
+
+.social-icons img:hover {
+    transform: scale(1.5);
+}
+      
+      @media screen and (max-width: 768px) {
+    /* Header Section Mobile Styles */
+    .container {
+        height: 97.5vh; /* Full screen height */
+        flex-direction: column; /* Stack items vertically */
+        padding: 0; /* Remove side padding */
+        justify-content: space-between; /* Spread items vertically */
+        background-image: url('https://i.ibb.co/HgXBQyy/Untitled-design-23.png'); /* Set the background image */
+        background-size: cover;
+        background-position: center;
+        background-color: #808080; /* Add gray background color */
+    }
+
+    /* Logo positioning with top and left */
+    .nav-bar img {
+        position: absolute;
+        top: -70px; /* Position the logo slightly above */
+        left: 50%; /* Center the logo horizontally */
+        transform: translateX(-50%); /* Ensure perfect centering */
+        width: 60px; /* Adjust logo size for smaller screens */
+    }
+
+    /* Nav-bar links positioning */
+    .nav-bar {
+        position: absolute;
+        top: 100px; /* Adjust this value to position the navigation */
+        left: 50%; /* Center the nav bar horizontally */
+        transform: translateX(-50%); /* Ensure perfect centering */
+        justify-content: center; /* Center the navigation links */
+        flex-direction: row; /* Align the links horizontally */
+        align-items: center;
+        gap: 30px; /* Add spacing between links */
+        background: none; /* Remove the white background */
+    }
+
+    /* CTA section positioning with top and left */
+    .text-content {
+        position: absolute;
+        top: 150px; /* Adjust this value to position the CTA section */
+        left: 50%; /* Center the CTA section horizontally */
+        transform: translateX(-50%); /* Ensure perfect centering */
+        text-align: center;
+        margin: 0;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 40px; /* Reduce font size to fit "Jake Ryder" on one line */
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+
+    .headline {
+        font-size: 18px; /* Reduce font size slightly to fit */
+        white-space: nowrap; /* Prevent text wrapping */
+        margin-bottom: 10px; /* Add some spacing below */
+    }
+
+    .cta-btn {
+        margin-top: 15px; /* Reduce top margin */
+        padding: 10px 30px; /* Adjust button padding */
+        font-size: 16px; /* Adjust button text size */
+    }
+
+    /* Green area, image, pattern, and shadow - positioned together */
+    .background-shape,
+    .image-content {
+        position: absolute;
+        top: 380px; /* Adjust this value to move the green area, image, and pattern */
+        left: 50%; /* Center the green area horizontally */
+        transform: translateX(-50%); /* Ensure perfect centering */
+        z-index: 1;
+    }
+
+    .background-shape {
+        width: 100%; /* Full width */
+        height: 428px; /* Adjusted height for the green shape */
+        clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 100% 0%); /* Same shape as desktop */
+        background: linear-gradient(to bottom, #c1ff72, #48bb0b); /* Keep the gradient */
+        margin-top: 20px; /* Ensure it is placed below the CTA */
+    }
+
+    .image-content {
+        bottom: 10px; /* Align image at the bottom */
+        left: 50%; /* Center the image horizontally */
+        transform: translateX(-50%); /* Ensure the image is perfectly centered */
+        z-index: 2; /* Ensure the image stays above the green background */
+        display: block; /* Ensure the image is displayed */
+    }
+
+    .image-content img {
+        width: 450px; /* Adjust image size for mobile */
+        max-width: 500px; /* Ensure it doesn't get too big */
+    }
+        
+        /* About Me Section Mobile Styles */
+    .about-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .about-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%; /* Full width container */
+    }
+
+    /* About Left (Images side by side with equal height) */
+    .about-left {
+        display: flex;
+        flex-direction: row; /* Display the images next to each other */
+        justify-content: space-between; /* Space between images */
+        align-items: stretch; /* Stretch the images to have equal height */
+        width: 100%; /* Full width container */
+        margin-bottom: -50px; /* Space below the images */
+        z-index: 1;
+    }
+
+    /* Ensuring both images have the same height and stay proportional */
+    .about-left img.about-image {
+        width: 90%; /* Each image takes 48% of the width */
+        height: 440px; /* Set a fixed height for the first image */
+        object-fit: contain; /* Maintain aspect ratio, no cropping */
+        top: -45px; /* Position the logo slightly above */
+        left: 60px;
+    }
+
+    .about-left img.about-me-title {
+        width: 80%; /* Same width as the first image */
+        height: 330px; /* Set the same fixed height for the second image */
+        object-fit: contain; /* Maintain aspect ratio, no cropping */
+        top: 10px; /* Position the logo slightly above */
+        left: -90px;
+    }
+
+    /* Align the logo left */
+    .about-logo {
+        width: 50px; /* Adjust logo size */
+        margin-left: 0; /* Align to the left */
+        margin-bottom: 20px; /* Add space below the logo */
+    }
+
+    /* About Text */
+    .about-text {
+        text-align: left;
+        font-size: 16px;
+        margin-bottom: 20px; /* Space below the text */
+    }
+
+    /* About Signature */
+    .about-signature {
+        text-align: left;
+        font-size: 24px;
+        margin-top: 10px;
+    }
+        /* My Services Section Mobile Styles */
+    .services-section {
+        padding: 50px 20px; /* Reduce padding for smaller screens */
+        text-align: center;
+    }
+
+    .services-section h2 {
+        font-size: 40px; /* Reduce font size for the heading */
+        font-weight: bold; /* Maintain bold text */
+        letter-spacing: 2px; /* Adjust letter spacing */
+        margin-bottom: 30px; /* Reduce margin below the heading */
+    }
+
+    .services-container {
+        display: flex;
+        flex-direction: column; /* Stack services vertically */
+        align-items: center; /* Center the services */
+        gap: 30px; /* Add spacing between service items */
+    }
+
+    .service {
+        width: 100%; /* Make each service take full width */
+        text-align: center; /* Center the text */
+    }
+
+    .service img {
+        width: 40px; /* Adjust icon size */
+        margin-bottom: 10px; /* Space between the icon and heading */
+    }
+
+    .service h3 {
+        font-size: 22px; /* Adjust font size for service heading */
+        margin-bottom: 10px; /* Space below the heading */
+        color: #fff;
+    }
+
+    .service p {
+        font-size: 14px; /* Reduce paragraph font size */
+        color: black;
+        line-height: 1.5; /* Improve readability */
+        margin-bottom: 20px; /* Add space below the text */
+    }
+
+    /* Single Button for Services Section */
+    .services-cta-btn {
+        margin-top: 20px; /* Adjust space above the button */
+        padding: 12px 30px; /* Adjust button padding */
+        font-size: 16px; /* Adjust font size for button */
+    }
+        
+        /* Instagram Section - Make the quote slightly smaller */
+    .instagram-section .quote {
+        font-size: 17px; /* Reduce font size slightly */
+        line-height: 1.2; /* Adjust line spacing for better readability */
+        margin: 30px 0; /* Adjust margins around the quote */
+    }
+        
+        /* Reviews Section */
+    .reviews-section {
+        padding: 50px 20px; /* Adjust padding for mobile */
+        text-align: center;
+    }
+
+    .reviews-container {
+        display: flex;
+        overflow: hidden; /* Hide the overflow for the slideshow effect */
+        width: 100%; /* Full width container */
+    }
+
+    .review-card {
+        min-width: 100%; /* Make each review card take full width */
+        flex-shrink: 0; /* Prevent the cards from shrinking */
+        transition: transform 0.5s ease-in-out; /* Smooth transition for sliding */
+    }
+
+    /* Keep the styling of each card the same */
+    .quote-icon {
+        width: 55px;
+        margin-bottom: 15px;
+    }
+
+    .review-card h3 {
+        font-size: 24px;
+        margin-top: 0;
+        font-weight: bold;
+        color: white;
+    }
+
+    .review-card p {
+        margin: 15px 0;
+        font-size: 16px;
+    }
+
+    .stars {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #f4c01e;
+    }
+
+    .client-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .client-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .client-info p {
+        font-size: 14px;
+        margin: 0;
+        color: white;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+  
+  <div class="header-social-icons">
+    <a href="https://www.instagram.com" target="_blank" data-username="@JakeRyderFitness">
+        <img src="https://i.ibb.co/BNqS98X/B-2024-10-08-T150501-252.png" alt="Instagram">
+    </a>
+    <a href="https://www.tiktok.com" target="_blank" data-username="@JakeRyderFitness">
+        <img src="https://i.ibb.co/xGD7XWF/B-2024-10-08-T150955-335.png" alt="TikTok">
+    </a>
+    <a href="https://www.youtube.com" target="_blank" data-username="Jake Ryder Fitness">
+        <img src="https://i.ibb.co/4M1NYbr/B-2024-10-08-T151101-442.png" alt="YouTube">
+    </a>
+    <a href="https://www.facebook.com" target="_blank" data-username="Jake Ryder Fitness">
+        <img src="https://i.ibb.co/Q8NP74g/B-2024-10-08-T150813-574.png" alt="Facebook">
+    </a>
+    <a href="https://twitter.com" target="_blank" data-username="@JakeRyderFit">
+        <img src="https://i.ibb.co/cv4QBz6/B-2024-10-08-T150413-245.png" alt="X">
+    </a>
+</div>
+
+
+    <div class="nav-bar">
+        <img src="https://i.ibb.co/LP4shQJ/B-4.gif" alt="Logo">
+        <a href="#">ABOUT</a>
+        <a href="#">SERVICES</a>
+        <a href="#">CLIENTS</a>
+        <a href="#">CONTACT</a>
+    </div>
+
+    <div class="container">
+        <div class="text-content">
+            <p class="headline">
+                Commit <strong>NOW</strong>,<br>
+                See Results <span class="highlight">TOMORROW</span>
+            </p>
+
+            <h1>JAKE RYDER</h1>
+            <div class="subtitle">
+                Fitness Coach / Personal Trainer 
+                <img class="verified-icon" src="https://i.ibb.co/gt52YDY/B-2024-10-07-T202429-048.png" alt="Verified">
+            </div>
+            <button class="cta-btn">GET STARTED</button>
+        </div>
+        <div class="image-content">
+            <img src="https://i.ibb.co/4jpxhys/B-2024-10-07-T191733-757.png" alt="Jake Ryder Image">
+        </div>
+        <div class="background-shape"></div>
+    </div>
+
+    <section class="about-section">
+        <div class="about-container">
+            <div class="about-left">
+                <!-- Add the ABOUT ME image overlaying the main image -->
+                <img src="https://i.ibb.co/MDLtL8X/B-2024-10-07-T224510-514.png" alt="About Me Title" class="about-me-title">
+                
+                <!-- Main image -->
+                <img src="https://i.ibb.co/52gvSxN/B-2024-10-07-T203006-441.png" alt="Coach Image" class="about-image">
+            </div>
+            <div class="about-right">
+                <img src="https://i.ibb.co/LP4shQJ/B-4.gif" alt="Logo" class="about-logo">
+                <p class="about-text">
+                    Hi, I'm Jake Ryder, a dedicated fitness coach with over 8 years of experience in helping clients achieve their fitness goals. My passion for health and wellness drives me to specialize in strength training, nutrition planning, and creating personalized workout programs tailored to individual needs.<br><br>
+                    I believe that fitness is more than just physical—it's about transforming your entire lifestyle. Let's work together to unlock your potential, elevate your strength, and achieve results that last a lifetime.
+                </p>
+                <h2 class="about-signature">Jake Ryder</h2>
+            </div>
+        </div>
+    </section>
+  
+  <section class="services-section">
+    <h2>My Services</h2>
+    <div class="services-container">
+        <!-- Personal Training -->
+        <div class="service">
+            <img src="https://i.ibb.co/y8qxd12/B-2024-10-07-T232935-460.png" alt="Personal Training Icon">
+            <h3>Personal Training</h3>
+            <p>Experience one-on-one coaching tailored to your unique fitness goals. Whether you're looking to build muscle, improve overall health, or enhance athletic performance, personalized training sessions will help you achieve optimal results.</p>
+        </div>
+
+        <!-- Weight Loss -->
+        <div class="service">
+            <img src="https://i.ibb.co/PxcsFHv/B-2024-10-07-T233003-506.png" alt="Weight Loss Icon">
+            <h3>Weight Loss</h3>
+            <p>Achieve your weight loss goals with customized programs designed to fit your lifestyle. Our approach combines effective workouts and nutritional guidance to help you shed pounds and maintain a healthy weight.</p>
+        </div>
+
+        <!-- Nutrition Advice -->
+        <div class="service">
+            <img src="https://i.ibb.co/w4gg1J7/B-2024-10-07-T233038-564.png" alt="Nutrition Advice Icon">
+            <h3>Nutrition Advice</h3>
+            <p>Unlock the power of proper nutrition with expert advice and meal planning that complements your fitness routine. Learn how to fuel your body for peak performance and sustainable health.</p>
+        </div>
+    </div>
+
+    <!-- Single "Get Started" button at the bottom -->
+    <div class="services-cta">
+        <button class="services-cta-btn">Get Started</button>
+    </div>
+</section>
+  
+  <section class="instagram-section">
+    <!-- Quote Section -->
+    <h2 class="quote">
+        "Your body can stand almost anything.<br>
+        It's your mind that you have to convince."
+    </h2>
+
+    <!-- Instagram profile info -->
+    <div class="instagram-profile">
+        <div class="instagram-info">
+            <img class="instagram-icon" src="https://i.ibb.co/cFYkSvy/B-2024-10-08-T125611-297.png" alt="Instagram Icon">
+            <span class="instagram-name">Jake Ryder</span>
+            <img class="verified-icon" src="https://i.ibb.co/JdmRd89/B-2024-10-07-T191237-000.png" alt="Verified Icon">
+        </div>
+    </div>
+
+    <div class="instagram-container">
+        <!-- Instagram Post 1 -->
+        <div class="instagram-post">
+            <img src="https://i.ibb.co/n0MRq6K/B-2024-10-08-T125003-004.png" alt="Instagram Post 1">
+            <button class="follow-btn">Follow</button>
+        </div>
+        
+        <!-- Instagram Post 2 -->
+        <div class="instagram-post">
+            <img src="https://i.ibb.co/3ydhMRg/B-2024-10-08-T124610-051.png" alt="Instagram Post 2">
+            <button class="follow-btn">Follow</button>
+        </div>
+
+        <!-- Instagram Post 3 -->
+        <div class="instagram-post">
+            <img src="https://i.ibb.co/KxkkfVD/B-2024-10-08-T124935-485.png" alt="Instagram Post 3">
+            <button class="follow-btn">Follow</button>
+        </div>
+    </div>
+</section>
+
+  <!-- Reviews Section -->
+<section class="reviews-section">
+    <h2>WHAT THEY SAY ABOUT <span>ME</span></h2>
+    <div class="reviews-container">
+        <!-- Review 1 -->
+        <div class="review-card">
+            <img class="quote-icon" src="https://i.ibb.co/WcBxgTt/B-2024-10-08-T135232-744.png" alt="Quote Icon">
+            <h3>Strength!</h3>
+            <p>Jake's training sessions are life-changing. I've never felt stronger and more confident!</p>
+            <div class="stars">★★★★★</div>
+            <div class="client-info">
+                <img src="https://i.ibb.co/9YQkx1b/B.jpg" alt="Client Image">
+                <p>Michael J</p>
+            </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card">
+            <img class="quote-icon" src="https://i.ibb.co/WcBxgTt/B-2024-10-08-T135232-744.png" alt="Quote Icon">
+            <h3>Success!</h3>
+            <p>His weight loss program is amazing! I reached my goal weight in just a few months.</p>
+            <div class="stars">★★★★★</div>
+            <div class="client-info">
+                <img src="https://i.ibb.co/2dRRrxn/B-2.jpg" alt="Client Image">
+                <p>David S</p>
+            </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card">
+            <img class="quote-icon" src="https://i.ibb.co/WcBxgTt/B-2024-10-08-T135232-744.png" alt="Quote Icon">
+            <h3>Vitality!</h3>
+            <p>Jake's nutrition advice transformed my diet. I feel healthier and more energetic every day.</p>
+            <div class="stars">★★★★★</div>
+            <div class="client-info">
+                <img src="https://i.ibb.co/4Z4fGrG/B-1.jpg" alt="Client Image">
+                <p>John L</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <!-- Contact Me Section -->
+<section class="contact-section">
+    <h2>Ready to Transform Your Life? <br> Contact Me Today</h2>
+    <button class="contact-btn">Contact Me</button>
+
+    <!-- Social Media Icons -->
+    <div class="social-icons">
+        <a href="https://www.instagram.com" target="_blank">
+            <img src="https://i.ibb.co/BNqS98X/B-2024-10-08-T150501-252.png" alt="Instagram">
+        </a>
+        <a href="https://www.tiktok.com" target="_blank">
+            <img src="https://i.ibb.co/xGD7XWF/B-2024-10-08-T150955-335.png" alt="TikTok">
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+            <img src="https://i.ibb.co/4M1NYbr/B-2024-10-08-T151101-442.png" alt="YouTube">
+        </a>
+        <a href="https://www.facebook.com" target="_blank">
+            <img src="https://i.ibb.co/Q8NP74g/B-2024-10-08-T150813-574.png" alt="Facebook">
+        </a>
+        <a href="https://twitter.com" target="_blank">
+            <img src="https://i.ibb.co/cv4QBz6/B-2024-10-08-T150413-245.png" alt="X">
+        </a>
+    </div>
+</section>
+  
+  <script>
+    let currentIndex = 0;
+    const reviewCards = document.querySelectorAll('.review-card');
+    const totalCards = reviewCards.length;
+
+    function showNextReview() {
+        currentIndex = (currentIndex + 1) % totalCards; // Loop through the cards
+        const offset = currentIndex * -100;
+        
+        reviewCards.forEach((card) => {
+            card.style.transform = `translateX(${offset}%)`;
+        });
+    }
+
+    // Only run the slideshow on screens smaller than 768px
+    function startSlideshow() {
+        if (window.innerWidth <= 768) {
+            setInterval(showNextReview, 3000); // Start the slideshow
+        }
+    }
+
+    // Start the slideshow when the page loads
+    window.onload = startSlideshow;
+
+    // Also start the slideshow if the window is resized
+    window.onresize = function () {
+        startSlideshow();
+    };
+</script>
+
+
+</body>
+</html>
