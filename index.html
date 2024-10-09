@@ -185,6 +185,14 @@
     let isDragging = false;
     let startX = 0, sliderOffsetLeft = 0, containerOriginalWidth = container.offsetWidth;
 
+    // Function to check if intro was played
+    const introPlayed = sessionStorage.getItem('introPlayed');
+
+    // Reset the intro if the back button is pressed and intro already played
+    if (introPlayed === 'true') {
+      sessionStorage.removeItem('introPlayed'); // Reset intro status
+    }
+
     // Prevent default drag behavior
     slider.addEventListener('dragstart', (e) => e.preventDefault());
 
@@ -230,6 +238,9 @@
       greenOverlay.style.zIndex = '1';  // Bring green overlay to the front
       greenOverlay.style.opacity = '1'; // Fade in the green color
 
+      // Mark that the intro has been played
+      sessionStorage.setItem('introPlayed', 'true');
+
       // After intro is complete, redirect to main.html
       setTimeout(() => {
         window.location.href = "main.html"; // Redirect to the main page
@@ -263,6 +274,9 @@
       elementsToFade.forEach(el => el.style.opacity = '0');
       greenOverlay.style.zIndex = '1';  // Bring green overlay to the front
       greenOverlay.style.opacity = '1'; // Fade in the green color
+
+      // Mark that the intro has been played
+      sessionStorage.setItem('introPlayed', 'true');
 
       // After intro is complete, redirect to main.html
       setTimeout(() => {
