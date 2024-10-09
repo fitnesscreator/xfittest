@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple Slide to Answer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .logo, .title, .subtitle, .slider-container {
+      transition: opacity 1s ease; /* Fade out smoothly */
+    }
+
+    .logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      color: white;
+      font-size: 80px;
+      margin-bottom: 5px;
+    }
+
+    .neon {
+      color: #a9f15d;
+      text-shadow: 
+        0 0 5px #a9f15d, 
+        0 0 10px #a9f15d,
+        0 0 20px #a9f15d,
+        0 0 40px #a9f15d,
+        0 0 80px #a9f15d,
+        0 0 120px #a9f15d;
+      animation: neon-glow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes neon-glow {
+      from {
+        text-shadow: 
+          0 0 10px #a9f15d, 
+          0 0 20px #a9f15d,
+          0 0 30px #a9f15d,
+          0 0 40px #a9f15d,
+          0 0 80px #a9f15d,
+          0 0 120px #a9f15d;
+      }
+      to {
+        text-shadow: 
+          0 0 5px #a9f15d, 
+          0 0 10px #a9f15d,
+          0 0 15px #a9f15d,
+          0 0 20px #a9f15d,
+          0 0 40px #a9f15d,
+          0 0 60px #a9f15d;
+      }
+    }
+
+    .subtitle {
+      color: white;
+      font-size: 50px;
+      margin-bottom: 60px;
+    }
+
+    .slider-container {
+      width: 250px;
+      height: 60px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.3));
+      border-radius: 50px;
+      position: relative;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: width 0.3s ease;
+    }
+
+    #slider {
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      left: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    #slider img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .slider-container p {
+      font-size: 18px;
+      color: #6c757d;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+      font-weight: 500;
+      margin-left: 70px;
+      opacity: 0.8;
+      position: relative;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine-text 3s infinite linear;
+    }
+
+    @keyframes shine-text {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    /* Fullscreen green overlay */
+    .green-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #a9f15d;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 1s ease; /* Smooth fade in */
+    }
+
+    /* To ensure slider works across mobile */
+    @media only screen and (max-width: 600px) {
+      .slider-container {
+        width: 80%;
+      }
+      #slider {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://i.ibb.co/LP4shQJ/B-4.gif" alt="Logo" class="logo">
+  
+  <div class="title">
+    The <span class="neon">Call</span> to Change
+  </div>
+  <div class="subtitle">Will You Take the First Step?</div>
+
+  <div class="slider-container">
+    <div id="slider">
+      <img src="https://i.ibb.co/nBTrZ00/B-2024-10-09-T142040-850.png" alt="Phone Icon">
+    </div>
+    <p>slide to answer</p>
+  </div>
+
+  <!-- Green overlay that fades in -->
+  <div class="green-overlay"></div>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const container = document.querySelector('.slider-container');
+    const greenOverlay = document.querySelector('.green-overlay');
+    const elementsToFade = document.querySelectorAll('.logo, .title, .subtitle, .slider-container');
+    let isDragging = false;
+    let startX = 0, sliderOffsetLeft = 0, containerOriginalWidth = container.offsetWidth;
+
+    // Prevent default drag behavior
+    slider.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // Function to move the slider and shrink the left side of the container
+    function moveSlider(clientX) {
+      let moveX = clientX - startX;
+      let newPosition = sliderOffsetLeft + moveX;
+
+      if (newPosition >= 0 && newPosition <= containerOriginalWidth - slider.offsetWidth) {
+        slider.style.left = `${newPosition}px`;
+
+        // Shrink the left side of the container while keeping the right side fixed
+        let newContainerWidth = containerOriginalWidth - newPosition;
+        container.style.width = `${newContainerWidth}px`;
+      }
+    }
+
+    // Mouse events
+    slider.addEventListener('mousedown', (e) => {
+      e.preventDefault(); // Prevent default behavior
+      isDragging = true;
+      startX = e.clientX;
+      sliderOffsetLeft = slider.offsetLeft;
+      containerOriginalWidth = container.offsetWidth; // Capture original width at start
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(e) {
+      if (isDragging) {
+        moveSlider(e.clientX);
+      }
+    }
+
+    function onMouseUp() {
+      isDragging = false;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      // Fade out elements and fade in green overlay
+      elementsToFade.forEach(el => el.style.opacity = '0');
+      greenOverlay.style.zIndex = '1';  // Bring green overlay to the front
+      greenOverlay.style.opacity = '1'; // Fade in the green color
+
+      // After intro is complete, redirect to main.html
+      setTimeout(() => {
+        window.location.href = "main.html"; // Redirect to the main page
+      }, 1500); // 1.5-second delay to allow the fade animation to complete
+    }
+
+    // Touch events
+    slider.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevent default touch drag behavior
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      sliderOffsetLeft = slider.offsetLeft;
+      containerOriginalWidth = container.offsetWidth; // Capture original width at start
+
+      document.addEventListener('touchmove', onTouchMove);
+      document.addEventListener('touchend', onTouchEnd);
+    });
+
+    function onTouchMove(e) {
+      if (isDragging) {
+        moveSlider(e.touches[0].clientX);
+      }
+    }
+
+    function onTouchEnd() {
+      isDragging = false;
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend', onTouchEnd);
+
+      // Fade out elements and fade in green overlay
+      elementsToFade.forEach(el => el.style.opacity = '0');
+      greenOverlay.style.zIndex = '1';  // Bring green overlay to the front
+      greenOverlay.style.opacity = '1'; // Fade in the green color
+
+      // After intro is complete, redirect to main.html
+      setTimeout(() => {
+        window.location.href = "main.html"; // Redirect to the main page
+      }, 1500); // 1.5-second delay to allow the fade animation to complete
+    }
+  </script>
+
+</body>
+</html>
