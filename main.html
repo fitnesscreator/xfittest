@@ -656,7 +656,7 @@
       @media screen and (max-width: 768px) {
     /* Header Section Mobile Styles */
     .container {
-        height: 97.5vh; /* Full screen height */
+        height: 104vh; /* Full screen height */
         flex-direction: column; /* Stack items vertically */
         padding: 0; /* Remove side padding */
         justify-content: space-between; /* Spread items vertically */
@@ -865,66 +865,146 @@
         line-height: 1.2; /* Adjust line spacing for better readability */
         margin: 30px 0; /* Adjust margins around the quote */
     }
+
+  }      
         
-        /* Reviews Section */
+        /* Reviews Section Responsive Design */
+@media screen and (max-width: 768px) {
     .reviews-section {
-        padding: 50px 20px; /* Adjust padding for mobile */
+        padding: 40px 15px; /* Further reduce padding for smaller screens */
         text-align: center;
     }
 
     .reviews-container {
-        display: flex;
-        overflow: hidden; /* Hide the overflow for the slideshow effect */
-        width: 100%; /* Full width container */
+        flex-direction: column; /* Stack reviews vertically */
+        gap: 30px; /* Reduce spacing between reviews */
+        align-items: center; /* Center align reviews */
     }
 
     .review-card {
-        min-width: 100%; /* Make each review card take full width */
-        flex-shrink: 0; /* Prevent the cards from shrinking */
-        transition: transform 0.5s ease-in-out; /* Smooth transition for sliding */
-    }
-
-    /* Keep the styling of each card the same */
-    .quote-icon {
-        width: 55px;
-        margin-bottom: 15px;
+        width: 70%; /* Make cards smaller to fit better */
+        height: 70%;
+        aspect-ratio: 4 / 5; /* Keep the portrait shape like desktop */
+        padding: 15px; /* Further reduce padding */
+        border-radius: 20px; /* Keep the same rounded corners */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Smaller shadow */
+        font-size: 13px; /* Slightly smaller font size */
     }
 
     .review-card h3 {
-        font-size: 24px;
-        margin-top: 0;
-        font-weight: bold;
-        color: white;
+        font-size: 18px; /* Slightly smaller heading size */
+        margin-bottom: 8px; /* Adjust spacing */
     }
 
     .review-card p {
-        margin: 15px 0;
-        font-size: 16px;
+        font-size: 15px; /* Adjust paragraph size */
+        line-height: 1.4; /* Maintain readability */
     }
 
     .stars {
-        font-size: 20px;
-        margin-bottom: 15px;
-        color: #f4c01e;
+        font-size: 16px; /* Slightly smaller stars */
+        margin-bottom: 8px; /* Adjust spacing */
     }
 
     .client-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        gap: 8px; /* Reduce space between client info elements */
     }
 
     .client-info img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+        width: 30px; /* Make client image smaller */
+        height: 30px; /* Match the adjusted size */
     }
 
     .client-info p {
-        font-size: 14px;
-        margin: 0;
-        color: white;
+        font-size: 12px; /* Slightly smaller font size for client name */
     }
+}
+
+/* Modal Background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden; /* Prevent scrolling */
+    background-color: rgba(0, 0, 0, 0.8); /* Black with opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background: linear-gradient(to right, #000000, #737373); /* Match contact section style */
+    position: fixed; /* Stay fixed in the center */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the modal */
+    padding: 20px;
+    border-radius: 20px;
+    width: 80%; /* Width of the modal */
+    max-width: 500px; /* Limit the width on larger screens */
+    text-align: center;
+    color: white;
+}
+
+.modal-content h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 16px;
+    text-align: left; /* Left-align the labels */
+    color: #48bb0b; /* Green color for labels */
+}
+
+.modal-content input, .modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background: #fff;
+    color: #000;
+    box-sizing: border-box;
+    text-align: left; /* Left-align input text */
+}
+
+.modal-content .submit-btn {
+    background: linear-gradient(to right, #48bb0b, #c1ff72);
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50px; /* Pill shape for the button */
+    transition: filter 0.3s;
+}
+
+.modal-content .submit-btn:hover {
+    filter: brightness(1.2);
+}
+
+/* Close Button */
+.close-btn {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #aaff00;
+}
+
+/* Prevent scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
 }
 
 
@@ -1109,11 +1189,11 @@
     </div>
 </section>
 
-  <!-- Contact Me Section -->
+  <!-- Updated Contact Me Section -->
 <section class="contact-section">
     <h2>Ready to Transform Your Life? <br> Contact Me Today</h2>
-    <button class="contact-btn">Contact Me</button>
-
+    <button class="contact-btn" id="contact-modal-btn">Contact Me</button>
+    
     <!-- Social Media Icons -->
     <div class="social-icons">
         <a href="https://www.instagram.com" target="_blank">
@@ -1134,34 +1214,50 @@
     </div>
 </section>
   
-  <script>
-    let currentIndex = 0;
-    const reviewCards = document.querySelectorAll('.review-card');
-    const totalCards = reviewCards.length;
+  <div id="contact-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Contact Me</h2>
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
 
-    function showNextReview() {
-        currentIndex = (currentIndex + 1) % totalCards; // Loop through the cards
-        const offset = currentIndex * -100;
-        
-        reviewCards.forEach((card) => {
-            card.style.transform = `translateX(${offset}%)`;
-        });
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" placeholder="Write your message here" required></textarea>
+
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </div>
+</div>
+
+  
+  
+<script>
+    const modal = document.getElementById('contact-modal');
+const btn = document.getElementById('contact-modal-btn');
+const closeBtn = document.querySelector('.close-btn');
+
+// Open modal
+btn.addEventListener('click', () => {
+    modal.style.display = 'block';
+});
+
+// Close modal when 'x' is clicked
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+// Close modal when clicking outside the modal content
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
     }
+});
 
-    // Only run the slideshow on screens smaller than 768px
-    function startSlideshow() {
-        if (window.innerWidth <= 768) {
-            setInterval(showNextReview, 3000); // Start the slideshow
-        }
-    }
 
-    // Start the slideshow when the page loads
-    window.onload = startSlideshow;
-
-    // Also start the slideshow if the window is resized
-    window.onresize = function () {
-        startSlideshow();
-    };
 </script>
 
 
