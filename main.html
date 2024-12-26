@@ -1008,6 +1008,10 @@ body.modal-open {
 }
 
 
+      html {
+    scroll-behavior: smooth;
+}
+
     </style>
 </head>
 <body>
@@ -1032,12 +1036,13 @@ body.modal-open {
 
 
     <div class="nav-bar">
-        <img src="https://i.ibb.co/LP4shQJ/B-4.gif" alt="Logo">
-        <a href="#">ABOUT</a>
-        <a href="#">SERVICES</a>
-        <a href="#">CLIENTS</a>
-        <a href="#">CONTACT</a>
-    </div>
+    <img src="https://i.ibb.co/LP4shQJ/B-4.gif" alt="Logo">
+    <a href="#about">ABOUT</a>
+    <a href="#services">SERVICES</a>
+    <a href="#clients">CLIENTS</a>
+    <a href="#contact">CONTACT</a>
+</div>
+
 
     <div class="container">
         <div class="text-content">
@@ -1059,7 +1064,7 @@ body.modal-open {
         <div class="background-shape"></div>
     </div>
 
-    <section class="about-section">
+    <section id="about" class="about-section">
         <div class="about-container">
             <div class="about-left">
                 <!-- Add the ABOUT ME image overlaying the main image -->
@@ -1079,7 +1084,7 @@ body.modal-open {
         </div>
     </section>
   
-  <section class="services-section">
+  <section id="services" class="services-section">
     <h2>My Services</h2>
     <div class="services-container">
         <!-- Personal Training -->
@@ -1148,7 +1153,7 @@ body.modal-open {
 </section>
 
   <!-- Reviews Section -->
-<section class="reviews-section">
+<section id="clients" class="reviews-section">
     <h2>WHAT THEY SAY ABOUT <span>ME</span></h2>
     <div class="reviews-container">
         <!-- Review 1 -->
@@ -1190,7 +1195,7 @@ body.modal-open {
 </section>
 
   <!-- Updated Contact Me Section -->
-<section class="contact-section">
+<section id="contact" class="contact-section">
     <h2>Ready to Transform Your Life? <br> Contact Me Today</h2>
     <button class="contact-btn" id="contact-modal-btn">Contact Me</button>
     
@@ -1259,6 +1264,22 @@ window.addEventListener('click', (event) => {
 
 
 </script>
+  <script>
+    document.querySelectorAll('.nav-bar a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent default anchor behavior
+            const targetId = this.getAttribute('href').slice(1); // Get the target section id
+            const targetSection = document.getElementById(targetId);
+
+            // Scroll to the target section
+            targetSection.scrollIntoView({
+                behavior: 'smooth', // Smooth scrolling
+                block: 'start' // Align to the top of the section
+            });
+        });
+    });
+</script>
+
 
 
 </body>
